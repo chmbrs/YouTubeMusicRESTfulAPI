@@ -260,7 +260,7 @@ if __name__ == '__main__':
   dummy2 = db.session.query(Vid).filter_by(code='DU64jmOPL5k').first()
 
   #If videos are not on the database, then add them
-  if not dummy1 or dummy2:
+  if not dummy1 or not dummy2:
       with db.session.begin(nested=True):
           db.session.add(Vid(title = 'Boris Brejcha - I Take It Smart', code='XA4vo1kef6g'))
           db.session.add(Vid(title = 'Noku Mana - Curawaka', code='DU64jmOPL5k'))
