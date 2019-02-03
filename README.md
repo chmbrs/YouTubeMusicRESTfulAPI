@@ -38,13 +38,16 @@ You can specify a different redirect URI. If you do, then you may also need to c
 This project uses `Pipenv` for managing the dependencies.
 1. `$ pip install pipenv`
 2. In the project directory run `$ pipenv install` to install the dependencies and create the virtual environment.
-3. To activate the project's virtualenv, run `$ pipenv shell`. :shell:
+3. To activate the project's virtualenv, run `$ pipenv shell` :shell:.
 Alternatively, run any command inside the virtualenv with `$ pipenv run COMMAND`.
 
 ## How to use?
 
-1. In the environment shell or using `$ pipenv run`, run `$ python app.py`.
-:runner: Immediately after, the Flask local server located in `http://localhost:8090/` will start:
+1. In the environment shell or using `$ pipenv run`, run :runner:
+
+`$ python app.py`.
+
+Immediately after, the Flask local server located in `http://localhost:8090/` will start:
 ```bash
 $ pipenv run python app.py
  * Serving Flask app "app" (lazy loading)
