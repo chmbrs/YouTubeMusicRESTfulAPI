@@ -12,12 +12,12 @@ This is meant to be a hands-on learning project for anyone who wants to understa
 
 ## Features
 - Saves the music videos information in a relational database.
-- Gets the last 50 of your YouTube liked **music** videos.
+- Retrieves the last 50 YouTube **music** videos that you liked.
 - Add and delete videos.
 
 ## Prerequisites
 
-For gathering the videos from the auto-generated liked music from YouTube, you'll need a `client_id.json` file with the credentials from Google.
+For gathering the videos from the auto-generated liked music list from YouTube, you'll need a `client_id.json` file with the credentials from Google.
 
 To get the file:
 1. Use this [wizard](https://console.developers.google.com/flows/enableapi?apiid=youtube) to create or select a project in the Google Developers Console and automatically turn on the API. Click **Continue**, then **Go to credentials**.
@@ -30,8 +30,7 @@ You can specify a different redirect URI. If you do, then you may also need to c
 7. Click the download icon (Download JSON) button to the right of the client ID.
 8. Move the downloaded file `client_id.json` to your working directory.
 
-#### Note:
-The program works without the prerequisites.
+**Note**: The program works without this prerequisite.
 
 ## Installation
 
@@ -42,9 +41,25 @@ This project uses `Pipenv` for managing the dependencies.
 
 ## How to use?
 
+1. In the environment shell or using `$ pipenv run`, run `$ python app.py`
+Immediately after, the Flask local server located in `http://localhost:8090/` will start:
+```
+bash
+$ pipenv run python app.py
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://localhost:8090/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: XXX-XXX-XXX
+```
+2. 
 
 ## Contribute
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/chmbrs/)
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -65,9 +80,9 @@ Feedbacks, questions, critics, ideas, etc. are extremely welcome.
 ## Credits
 
 - [Pipenv Guide](https://realpython.com/pipenv-guide/)
-- [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ) -  Tutorials on Flask
-- [Well structured Rest APIs](https://medium.com/ki-labs-engineering/designing-well-structured-rest-apis-with-flask-restplus-part-1-7e96f2da8850)
-- [Flask RestPlus Server](https://github.com/frol/flask-restplus-server-example) - Example
+- [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ) -  Awesome Tutorials on Flask
+- [Well structured Rest APIs](https://medium.com/ki-labs-engineering/designing-well-structured-rest-apis-with-flask-restplus-part-1-7e96f2da8850) - Excellent Medium Post
+- [Flask RestPlus Server](https://github.com/frol/flask-restplus-server-example) - Nice Example
 
 ## License: MIT
 Copyright (c) 2019 Juan José Chambers
@@ -80,4 +95,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 MIT © [Juan José Chambers](https://github.com/chmbrs/)
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://github.com/chmbrs/)
