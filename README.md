@@ -5,7 +5,7 @@
 A simple RESTful API connected with YouTube API.
 
 ## Motivation
-This is meant to be a hands-on learning project for anyone who wants to understand how RESTful API's works and their potential.
+This is meant to be a hands-on learning :books: project for anyone who wants to understand how RESTful API's works and their potential.
 
 ## Screenshots
 
@@ -19,7 +19,7 @@ This is meant to be a hands-on learning project for anyone who wants to understa
 
 For gathering the videos from the auto-generated liked music list from YouTube, you'll need a `client_id.json` file with the credentials from Google.
 
-:lock: To get the file:
+:key:
 1. Use this [wizard](https://console.developers.google.com/flows/enableapi?apiid=youtube) to create or select a project in the Google Developers Console and automatically turn on the API. Click **Continue**, then **Go to credentials**.
 2. On the **Add credentials to your project page**, click the **Cancel** button.
 3. At the top of the page, select the **OAuth consent screen** tab. Select an **Email address**, enter a **Product name** if not already set, and click the **Save** button.
@@ -28,9 +28,9 @@ For gathering the videos from the auto-generated liked music list from YouTube, 
 You can specify a different redirect URI. If you do, then you may also need to change the sample code to launch the web server at an address other than `http://localhost:8090` and/or to specify a callback endpoint other than `oauth2callback`.
 6. Click the **Create** button.
 7. Click the download icon (Download JSON) button to the right of the client ID.
-8. Move the downloaded file `client_id.json` to your working directory.
+8. Move the downloaded file `client_id.json` to your working directory. :open_file_folder:
 
-:bulb:: The program works without this prerequisite.
+:bulb: The program works without this prerequisite.
 
 ## Installation
 
@@ -55,10 +55,11 @@ $ pipenv run python app.py
  * Debugger is active!
  * Debugger PIN: XXX-XXX-XXX
 ```
-:bulb:: The SQLlite database will be created as `/database.db` with dummy data.
+:bulb: The SQLlite database will be created as `/database.db` with dummy data.
 
 2. Now you can `$ curl` or visit the documentation in your browser to get the resources.
 
+:warning: Remember that for using the YouTube API you should have the file and an authorized session with OAuth2.
 
 ## Contribute
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/chmbrs/)
