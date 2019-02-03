@@ -1,6 +1,6 @@
 # YouTube Music RESTful API
 ### Flask-RestPlus & SQLAlchemy
-[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) 
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 A simple RESTful API connected with YouTube API.
 
@@ -38,12 +38,13 @@ The program works without the prerequisites.
 This project uses `Pipenv` for managing the dependencies.
 1. `$ pip install pipenv`
 2. In the project directory install the dependencies and create the environment `$ pipenv install`
-3.
+3. To activate the project's virtualenv, run `$ pipenv shell`. Alternatively, run a command inside the virtualenv with `$ pipenv run`.
 
 ## How to use?
 
 
-## Contribute [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+## Contribute
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -56,8 +57,8 @@ Feedbacks, questions, critics, ideas, etc. are extremely welcome.
 ## References
 
 - [Pipenv](https://pipenv.readthedocs.io/en/latest/basics/) - Pipenv basic usage
-- [YouTube API](https://developers.google.com/youtube/v3/docs/playlistItems/list#usage) - PlaylistItems usage
-- [YouTube Python Quickstart](https://developers.google.com/youtube/v3/quickstart/python)
+- [YouTube API](https://developers.google.com/youtube/v3/docs/playlistItems/list#usage) - Playlist Items usage
+- [YouTube Python Quickstart](https://developers.google.com/youtube/v3/quickstart/python) - Python Quickstart
 - [Flask-RestPlus](https://flask-restplus.readthedocs.io/en/stable/)
 - [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org/2.3/)
 
@@ -66,7 +67,7 @@ Feedbacks, questions, critics, ideas, etc. are extremely welcome.
 - [Pipenv Guide](https://realpython.com/pipenv-guide/)
 - [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ) -  Tutorials on Flask
 - [Well structured Rest APIs](https://medium.com/ki-labs-engineering/designing-well-structured-rest-apis-with-flask-restplus-part-1-7e96f2da8850)
-- [Flask RestPlus Server Example](https://github.com/frol/flask-restplus-server-example)
+- [Flask RestPlus Server](https://github.com/frol/flask-restplus-server-example) - Example
 
 ## License: MIT
 Copyright (c) 2019 Juan José Chambers
