@@ -88,12 +88,16 @@ class AddVideos(Resource):
         title = videos_api.payload['title']
         code = videos_api.payload['code']
 
-        new_video = Vid(title=title, code=code)
+        # Check if the video is already on the database
+        video_exists = db.session.query(Vid).filter_by(code=code).first()
+        #If video are not on the database, then add them
+        if not video_exists:
+            new_video = Vid(title=title, code=code)
+            db.session.add(new_video)
+            db.session.commit()
+            return {'result': 'video added'}, 201
 
-        db.session.add(new_video)
-        db.session.commit()
-
-        return {'result': 'video added'}, 201
+        return {'result': 'video already on database'}, 201
 
 
 @videos_api.route('/')
@@ -243,16 +247,23 @@ def playlist_items_list_by_playlist_id(client, **kwargs):
 ################################################################################
 
 
-
 if __name__ == '__main__':
   # When running locally, disable OAuthlib's HTTPs verification. When
   # running in production *do not* leave this option enabled.
   os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
+  #Create all the tables of the database
   db.create_all()
 
-  with db.session.begin(nested=True):
-    db.session.add(Vid(title = 'Boris Brejcha - I Take It Smart', code = 'XA4vo1kef6g'))
-    db.session.add(Vid(title = 'Noku Mana - Curawaka', code = 'DU64jmOPL5k'))
+  # Check if the videos codes are already on the database
+  dummy1 = db.session.query(Vid).filter_by(code='XA4vo1kef6g').first()
+  dummy2 = db.session.query(Vid).filter_by(code='DU64jmOPL5k').first()
+
+  #If videos are not on the database, then add them
+  if not dummy1 or dummy2:
+      with db.session.begin(nested=True):
+          db.session.add(Vid(title = 'Boris Brejcha - I Take It Smart', code='XA4vo1kef6g'))
+          db.session.add(Vid(title = 'Noku Mana - Curawaka', code='DU64jmOPL5k'))
+
 
   app.run('localhost', 8090, debug=True,) #use_reloader=False)

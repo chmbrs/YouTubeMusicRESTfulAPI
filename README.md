@@ -38,7 +38,7 @@ This project uses `Pipenv` for managing the dependencies.
 1. `$ pip install pipenv`
 2. In the project directory run `$ pipenv install` to install the dependencies and create the virtual environment.
 3. To activate the project's virtualenv, run `$ pipenv shell` :shell:.
-Alternatively, run any command inside the virtualenv with `$ pipenv run COMMAND`.
+ - Alternatively, run any command inside the virtualenv with `$ pipenv run COMMAND`.
 
 ## How to use?
 
