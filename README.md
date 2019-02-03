@@ -5,10 +5,10 @@
 A simple RESTful API connected with YouTube API.
 
 ## Motivation
-This is meant to be a hands-on learning :books: project for anyone who wants to understand how RESTful API's works and their potential.
+Besides from the fact that the project is meant to be a hands-on learning :books: project for anyone who wants to understand how RESTful API's works and their potential, it also leverages the automatic playlist YouTube creates from all your liked videos using an algorithm (probably a machine learning one) that separates the music videos from the normal ones.
 
 ## Screenshots
-
+in progress...
 
 ## Features
 - Saves the music videos information in a relational database.
@@ -29,7 +29,6 @@ You can specify a different redirect URI. If you do, then you may also need to c
 6. Click the **Create** button.
 7. Click the download icon (Download JSON) button to the right of the client ID.
 8. Move the downloaded file `/client_id.json` to your working directory. :open_file_folder:
-:unlock:
 
 :bulb: The program works without this prerequisite.
 
@@ -43,11 +42,12 @@ Alternatively, run any command inside the virtualenv with `$ pipenv run COMMAND`
 
 ## How to use?
 
-1. In the environment shell or using `$ pipenv run`, run :runner:
+1. In the environment shell or using `$ pipenv run`, run:
 
 `$ python app.py`.
 
 Immediately after, the Flask local server located in `http://localhost:8090/` will start:
+
 ```bash
 $ pipenv run python app.py
  * Serving Flask app "app" (lazy loading)
@@ -62,7 +62,7 @@ $ pipenv run python app.py
 ```
 :bulb: The SQLlite database will be created as `/database.db` with some dummy data.
 
-2. Now you can `$ curl ` or visit the documentation in your browser to get the resources.
+2. To get the resources you can `$ curl ` [http://localhost:8090/](http://localhost:8090/) or visit the documentation in your browser.
 
 :warning: Remember that for using the YouTube API you should have the `/client_id.json` file and an authorized session with OAuth2.
 
