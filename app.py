@@ -62,7 +62,7 @@ class VidSchema(ma.ModelSchema):
     class Meta:
         strict = True
         model = Vid()
-        fields = ['id', 'title', 'link']
+        fields = ['id', 'title', 'link', 'code']
 
 vid_schema = VidSchema()
 vids_schema = VidSchema(many=True)
@@ -111,17 +111,10 @@ class VideosList(Resource):
         output = vids_schema.dump(videos_all).data
         return {'videos':output}
 
-    # @app.route('/youtube')
-    # def get(self):
-    #     """
-    #     Get all your liked music YouTube videos
-    #     (Requires authentication)
-    #     """
-    #     pass
-
 
 @videos_api.route('/youtube')
 class YoutubeLikedVideos(Resource):
+
     def get(self):
         """
         Get the last 50 YouTube liked music videos
@@ -129,15 +122,40 @@ class YoutubeLikedVideos(Resource):
         To launch OAuth2 please visit http://localhost:8090/videos/youtube in your browser once.
         """
         if 'credentials' not in flask.session:
-            return flask.redirect('authorize')\
+            flask.redirect('authorize')
         # Load the credentials from the session.
         credentials = google.oauth2.credentials.Credentials(**flask.session['credentials'])
         client = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
         response =  playlist_items_list_by_playlist_id(client,part='snippet', maxResults=50, playlistId='LM')
 
         return response
 
+@videos_api.route('/youtube/add_all')
+class AddAllTheLikedVideos(Resource):
 
+    def get(self):
+        """
+        Add the 50 of your liked music videos to the database
+        """
+        if 'credentials' not in flask.session:
+            flask.redirect('authorize')
+        # Load the credentials from the session.
+        credentials = google.oauth2.credentials.Credentials(**flask.session['credentials'])
+        client = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
+        response =  playlist_items_list_by_playlist_id(client,part='snippet', maxResults=50, playlistId='LM')
+
+        for video in response:
+            # Check if the video is already on the database
+            video_exists = db.session.query(Vid).filter_by(code=video['code']).first()
+            #If video are not on the database, then add them
+            if not video_exists:
+                new_video = Vid(title=video['title'], code=video['code'])
+                db.session.add(new_video)
+
+        db.session.commit()
+        return {'result': 'videos added'}, 201
 
 ################################################################################
 ################################################################################
