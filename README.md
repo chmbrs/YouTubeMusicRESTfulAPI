@@ -12,8 +12,8 @@ in progress...
 
 ## Features
 - Saves the music videos information in a relational database.
-- Retrieves the last 50 YouTube **music** videos that you've liked.
-- Add and delete videos.
+- Retrieves and saves the last 50 YouTube **music** videos that you've liked.
+- Add videos.
 
 ## Prerequisites
 
