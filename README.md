@@ -12,14 +12,14 @@ This is meant to be a hands-on learning :books: project for anyone who wants to 
 
 ## Features
 - Saves the music videos information in a relational database.
-- Retrieves the last 50 YouTube **music** videos that you liked.
+- Retrieves the last 50 YouTube **music** videos that you've liked.
 - Add and delete videos.
 
 ## Prerequisites
 
-For gathering the videos from the auto-generated liked music list from YouTube, you'll need a `client_id.json` file with the credentials from Google.
+For gathering the videos from the auto-generated liked music list from YouTube, you'll need a `/client_id.json` file with the credentials from Google. :key:
 
-:key:
+:lock: For getting the file:
 1. Use this [wizard](https://console.developers.google.com/flows/enableapi?apiid=youtube) to create or select a project in the Google Developers Console and automatically turn on the API. Click **Continue**, then **Go to credentials**.
 2. On the **Add credentials to your project page**, click the **Cancel** button.
 3. At the top of the page, select the **OAuth consent screen** tab. Select an **Email address**, enter a **Product name** if not already set, and click the **Save** button.
@@ -28,7 +28,8 @@ For gathering the videos from the auto-generated liked music list from YouTube, 
 You can specify a different redirect URI. If you do, then you may also need to change the sample code to launch the web server at an address other than `http://localhost:8090` and/or to specify a callback endpoint other than `oauth2callback`.
 6. Click the **Create** button.
 7. Click the download icon (Download JSON) button to the right of the client ID.
-8. Move the downloaded file `client_id.json` to your working directory. :open_file_folder:
+8. Move the downloaded file `/client_id.json` to your working directory. :open_file_folder:
+:unlock:
 
 :bulb: The program works without this prerequisite.
 
@@ -37,11 +38,12 @@ You can specify a different redirect URI. If you do, then you may also need to c
 This project uses `Pipenv` for managing the dependencies.
 1. `$ pip install pipenv`
 2. In the project directory run `$ pipenv install` to install the dependencies and create the virtual environment.
-3. To activate the project's virtualenv, run `$ pipenv shell`. Alternatively, run a command inside the virtualenv with `$ pipenv run`.
+3. To activate the project's virtualenv, run `$ pipenv shell`. :shell:
+Alternatively, run any command inside the virtualenv with `$ pipenv run COMMAND`.
 
 ## How to use?
 
-1. In the environment shell or using `$ pipenv run`, run `$ python app.py`
+1. In the environment shell or using `$ pipenv run`, run `$ python app.py`.
 :runner: Immediately after, the Flask local server located in `http://localhost:8090/` will start:
 ```bash
 $ pipenv run python app.py
@@ -55,20 +57,20 @@ $ pipenv run python app.py
  * Debugger is active!
  * Debugger PIN: XXX-XXX-XXX
 ```
-:bulb: The SQLlite database will be created as `/database.db` with dummy data.
+:bulb: The SQLlite database will be created as `/database.db` with some dummy data.
 
-2. Now you can `$ curl` or visit the documentation in your browser to get the resources.
+2. Now you can `$ curl ` or visit the documentation in your browser to get the resources.
 
-:warning: Remember that for using the YouTube API you should have the file and an authorized session with OAuth2.
+:warning: Remember that for using the YouTube API you should have the `/client_id.json` file and an authorized session with OAuth2.
 
 ## Contribute
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/chmbrs/)
 
-1. Fork it!
+1. Fork it! :fork_and_knife:
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+5. Submit a pull request. :smiley:
 
 Feedbacks, questions, critics, ideas, etc. are extremely welcome.
 
@@ -84,7 +86,7 @@ Feedbacks, questions, critics, ideas, etc. are extremely welcome.
 
 - [Pipenv Guide](https://realpython.com/pipenv-guide/)
 - [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ) -  Awesome Tutorials on Flask
-- [Well structured Rest APIs](https://medium.com/ki-labs-engineering/designing-well-structured-rest-apis-with-flask-restplus-part-1-7e96f2da8850) - Excellent Medium Post
+- [Well Structured Rest APIs](https://medium.com/ki-labs-engineering/designing-well-structured-rest-apis-with-flask-restplus-part-1-7e96f2da8850) - Excellent Medium Post
 - [Flask RestPlus Server](https://github.com/frol/flask-restplus-server-example) - Nice Example
 
 ## License: MIT
