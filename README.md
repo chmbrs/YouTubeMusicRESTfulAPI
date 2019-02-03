@@ -43,8 +43,7 @@ This project uses `Pipenv` for managing the dependencies.
 
 1. In the environment shell or using `$ pipenv run`, run `$ python app.py`
 Immediately after, the Flask local server located in `http://localhost:8090/` will start:
-```
-bash
+```bash
 $ pipenv run python app.py
  * Serving Flask app "app" (lazy loading)
  * Environment: production
@@ -56,7 +55,7 @@ $ pipenv run python app.py
  * Debugger is active!
  * Debugger PIN: XXX-XXX-XXX
 ```
-2. 
+2.
 
 ## Contribute
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/chmbrs/)
