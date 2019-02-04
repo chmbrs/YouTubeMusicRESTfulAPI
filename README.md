@@ -9,8 +9,13 @@ Besides from the fact that the project is meant to be a hands-on learning :books
 
 ## Screenshots
 ![Screenshot1](/data/screenshots/screen1.png?raw=true "Swagger")
-![Screenshot2](/data/screenshots/screen2.png?raw=true "Database JSON response")
+- "Swagger"
+
 ![Screenshot3](/data/screenshots/screen3.png?raw=true "Youtube API response")
+- "Youtube API response"
+
+![Screenshot2](/data/screenshots/screen2.png?raw=true "Database JSON response")
+- "Database JSON response"
 
 ## Features
 - Saves the music videos information in a relational database.
