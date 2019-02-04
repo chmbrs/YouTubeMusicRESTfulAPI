@@ -86,11 +86,12 @@ parser = api.parser()
 parser.add_argument('title', type=str, required=True, help='The New Title')
 
 #API Routes
+#MAIN route
 @videos_api.route('/')
 class Videos(Resource):
     @api.doc(responses={404: 'Error', 200: 'Success'})
     def get(self):
-        '''Get all your stored music videos'''
+        '''Get all the music videos stored in the database'''
         videos_all = Vid.query.all()
         output = vids_schema.dump(videos_all).data
         return {'videos':output}, 200
@@ -112,46 +113,14 @@ class Videos(Resource):
             return {'result': 'video added'}, 200
         return {'result': 'video already on db'}, 404
 
-
-@videos_api.route('/<string:code>')
-@api.doc(responses={404: 'Code Not Found', 200:'Success'},
-         params={'code': 'The Video Code'})
-class Video(Resource):
-
-    '''Show a single item and lets you delete it'''
-    def get(self, code):
-        '''Fetch a single video'''
-        video = check_if_video_exists(code)
-        output = vid_schema.dump(video).data
-        return {'video':output}, 200
-
-    def delete(self, code):
-        '''Delete a a single video'''
-        video = check_if_video_exists(code)
-        db.session.delete(video)
-        db.session.commit()
-        return {'result':'deleted'}, 200
-
-    @api.doc(parser=parser)
-    def put(self, code):
-        '''Update the title of a video'''
-        args = parser.parse_args()
-        new_details = {'title':args['title'], 'code':code}
-        video = check_if_video_exists(code)
-
-        video.title = new_details['title']
-        db.session.commit()
-
-        return {'result':'updated'}, 200
-
-
+#YouTube routes
 @videos_api.route('/youtube')
 @api.doc(responses={404: 'Not able to fetch the YouTube API', 200: 'Success'})
 class YoutubeLikedVideos(Resource):
     def get(self):
         '''
         Get the last 50 YouTube liked music videos
-        Note: The session must be authorized for retrieving the list.
+        Note: The session must be authorized for retrieving the list
         To launch OAuth2 please visit http://localhost:8090/videos/youtube in your browser once.
         '''
         if 'credentials' not in flask.session:
@@ -189,6 +158,37 @@ class AddAllTheLikedVideos(Resource):
         db.session.commit()
         return {'result': 'videos added'}, 200
 
+# Single videos route
+@videos_api.route('/<string:code>')
+@api.doc(responses={404: 'Code Not Found', 200:'Success'},
+         params={'code': 'The Video Code'})
+class Video(Resource):
+
+    '''Show a single item and lets you delete it'''
+    def get(self, code):
+        '''Fetch a single video.'''
+        video = check_if_video_exists(code)
+        output = vid_schema.dump(video).data
+        return {'video':output}, 200
+
+    def delete(self, code):
+        '''Delete a single video'''
+        video = check_if_video_exists(code)
+        db.session.delete(video)
+        db.session.commit()
+        return {'result':'deleted'}, 200
+
+    @api.doc(parser=parser)
+    def put(self, code):
+        '''Update the title of a single video'''
+        args = parser.parse_args()
+        new_details = {'title':args['title'], 'code':code}
+        video = check_if_video_exists(code)
+
+        video.title = new_details['title']
+        db.session.commit()
+
+        return {'result':'updated'}, 200
 
 
 ################################################################################
