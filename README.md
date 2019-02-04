@@ -9,12 +9,15 @@ Besides from the fact that the project is meant to be a hands-on learning :books
 
 ## Screenshots
 - "Swagger"
+
 ![Screenshot1](/data/screenshots/screen1.png?raw=true "Swagger")
 
 - "Youtube API response"
+
 ![Screenshot3](/data/screenshots/screen3.png?raw=true "Youtube API response")
 
 - "Database JSON response"
+
 ![Screenshot2](/data/screenshots/screen2.png?raw=true "Database JSON response")
 
 ## Features
