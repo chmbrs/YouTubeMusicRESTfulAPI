@@ -8,7 +8,9 @@ A simple RESTful API connected with YouTube API.
 Besides from the fact that the project is meant to be a hands-on learning :books: project for anyone who wants to understand how RESTful API's works and their potential, it also leverages the automatic playlist YouTube creates from all your liked videos using an algorithm (probably a machine learning one) that separates the music videos from the normal ones.
 
 ## Screenshots
-in progress...
+![Screenshot1](/data/screenshots/screen1.png?raw=true "Swagger")
+![Screenshot2](/data/screenshots/screen2.png?raw=true "Database JSON response")
+![Screenshot3](/data/screenshots/screen3.png?raw=true "Youtube API response")
 
 ## Features
 - Saves the music videos information in a relational database.

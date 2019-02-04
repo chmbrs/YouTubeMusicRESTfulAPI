@@ -11,12 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restplus import Api, Namespace, Resource, fields
 from flask_marshmallow import Marshmallow
 
-
-app = Flask(__name__)
-
-################################################################################
-################################################################################
-#Google API BEGIN
+#Google API
 ################################################################################
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
@@ -29,12 +24,11 @@ SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 ################################################################################
-#Google API END
-################################################################################
-################################################################################
 
-# Extensions initialization
+
+app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -43,8 +37,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # key. See http://flask.pocoo.org/docs/0.12/quickstart/#sessions.
 app.secret_key = 'Super Secret Key'
 
+# Extensions initialization
 db = SQLAlchemy(app)
-
 ma = Marshmallow(app)
 api = Api(app, version='1.0', title='YouTube Music Videos API',
           description='An API for your YouTube Music Videos')
@@ -67,6 +61,8 @@ class VidSchema(ma.ModelSchema):
 vid_schema = VidSchema()
 vids_schema = VidSchema(many=True)
 
+
+
 #API model
 video_model = api.model('videos', {
     'title': fields.String('Title of the video.'),
@@ -77,17 +73,65 @@ video_model = api.model('videos', {
 videos_api = Namespace('videos')
 api.add_namespace(videos_api)
 
-# endpoint to create new video
-@videos_api.route('/add')
-class AddVideos(Resource):
+def abort_if_video_doesnt_exist(code):
+    video_exists = db.session.query(Vid).filter_by(code=code).first()
+    if video_exists:
+        return video_exists
+    else:
+        api.abort(404, f"Video code {code} doesn't exist")
+        return
+
+parser = api.parser()
+parser.add_argument('title', type=str, required=True, help='The New Title')
+
+@videos_api.route('/video/<string:code>')
+@api.doc(responses={404: 'Code Not Found'}, params={'code': 'The Video Code'})
+class Video(Resource):
+
+    '''Show a single todo item and lets you delete them'''
+    @api.marshal_with(video_model)
+    def get(self, code):
+        '''Fetch a single video'''
+        video = abort_if_video_doesnt_exist(code)
+        output = vid_schema.dump(video).data
+        return output, 200
+
+    def delete(self, code):
+        '''Delete a a single video'''
+        video = abort_if_video_doesnt_exist(code)
+        output = vid_schema.dump(video).data
+        db.session.delete(video)
+        db.session.commit()
+        return {'deleted':output}, 200
+
+    @api.doc(parser=parser)
+    @api.marshal_with(video_model)
+    def put(self, code):
+        '''Update a the title of a video'''
+        args = parser.parse_args()
+        new_details = {'title':args['title'],
+                       'code':code}
+        video = abort_if_video_doesnt_exist(code)
+        video.title = new_details['title']
+        db.session.commit()
+
+        return {'updated':video}, 200
+
+
+@videos_api.route('/')
+@api.doc(responses={404: 'Video Already on the Database'})
+class Videos(Resource):
+    def get(self):
+        '''Get all your stored music videos'''
+        videos_all = Vid.query.all()
+        output = vids_schema.dump(videos_all).data
+        return {'videos':output}, 200
+
     @videos_api.expect(video_model)
     def post(self):
-        """
-        Add new video to the list
-        """
+        '''Add new video to the list'''
         title = videos_api.payload['title']
         code = videos_api.payload['code']
-
         # Check if the video is already on the database
         video_exists = db.session.query(Vid).filter_by(code=code).first()
         #If video are not on the database, then add them
@@ -95,32 +139,19 @@ class AddVideos(Resource):
             new_video = Vid(title=title, code=code)
             db.session.add(new_video)
             db.session.commit()
-            return {'result': 'video added'}, 201
-
-        return {'result': 'video already on database'}, 201
-
-
-@videos_api.route('/')
-class VideosList(Resource):
-
-    def get(self):
-        """
-        Get all your stored music videos
-        """
-        videos_all = Vid.query.all()
-        output = vids_schema.dump(videos_all).data
-        return {'videos':output}
+            return {'result': 'video added'}, 200
+        return {'result': 'video already on db'}, 404
 
 
 @videos_api.route('/youtube')
+@api.doc(responses={404: 'Not able to fetch the YouTube API'})
 class YoutubeLikedVideos(Resource):
-
     def get(self):
-        """
+        '''
         Get the last 50 YouTube liked music videos
         Note: The session must be authorized for retrieving the list.
         To launch OAuth2 please visit http://localhost:8090/videos/youtube in your browser once.
-        """
+        '''
         if 'credentials' not in flask.session:
             flask.redirect('authorize')
         # Load the credentials from the session.
@@ -129,15 +160,14 @@ class YoutubeLikedVideos(Resource):
 
         response =  playlist_items_list_by_playlist_id(client,part='snippet', maxResults=50, playlistId='LM')
 
-        return response
+        return response, 200
 
 @videos_api.route('/youtube/add_all')
+@api.doc(responses={404: 'Not able to fetch the YouTube API'})
 class AddAllTheLikedVideos(Resource):
-
     def get(self):
-        """
-        Add the 50 of your liked music videos to the database
-        """
+        '''Add the 50 of your liked music videos to the database'''
+
         if 'credentials' not in flask.session:
             flask.redirect('authorize')
         # Load the credentials from the session.
@@ -155,7 +185,9 @@ class AddAllTheLikedVideos(Resource):
                 db.session.add(new_video)
 
         db.session.commit()
-        return {'result': 'videos added'}, 201
+        return {'result': 'Videos added'}, 200
+
+
 
 ################################################################################
 ################################################################################
