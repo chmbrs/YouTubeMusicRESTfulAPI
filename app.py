@@ -58,10 +58,9 @@ class VidSchema(ma.ModelSchema):
         model = Vid()
         fields = ['id', 'title', 'link', 'code']
 
+# Variables to facilitate calling
 vid_schema = VidSchema()
 vids_schema = VidSchema(many=True)
-
-
 
 #API model
 video_model = api.model('videos', {
@@ -73,7 +72,8 @@ video_model = api.model('videos', {
 videos_api = Namespace('videos')
 api.add_namespace(videos_api)
 
-def abort_if_video_doesnt_exist(code):
+# If video doesn't exist then abort
+def check_if_video_exists(code):
     video_exists = db.session.query(Vid).filter_by(code=code).first()
     if video_exists:
         return video_exists
@@ -81,57 +81,27 @@ def abort_if_video_doesnt_exist(code):
         api.abort(404, f"Video code {code} doesn't exist")
         return
 
+#Parser for the new title
 parser = api.parser()
 parser.add_argument('title', type=str, required=True, help='The New Title')
 
-@videos_api.route('/video/<string:code>')
-@api.doc(responses={404: 'Code Not Found'}, params={'code': 'The Video Code'})
-class Video(Resource):
-
-    '''Show a single todo item and lets you delete them'''
-    @api.marshal_with(video_model)
-    def get(self, code):
-        '''Fetch a single video'''
-        video = abort_if_video_doesnt_exist(code)
-        output = vid_schema.dump(video).data
-        return output, 200
-
-    def delete(self, code):
-        '''Delete a a single video'''
-        video = abort_if_video_doesnt_exist(code)
-        output = vid_schema.dump(video).data
-        db.session.delete(video)
-        db.session.commit()
-        return {'deleted':output}, 200
-
-    @api.doc(parser=parser)
-    @api.marshal_with(video_model)
-    def put(self, code):
-        '''Update a the title of a video'''
-        args = parser.parse_args()
-        new_details = {'title':args['title'],
-                       'code':code}
-        video = abort_if_video_doesnt_exist(code)
-        video.title = new_details['title']
-        db.session.commit()
-
-        return {'updated':video}, 200
-
-
+#API Routes
 @videos_api.route('/')
-@api.doc(responses={404: 'Video Already on the Database'})
 class Videos(Resource):
+    @api.doc(responses={404: 'Error', 200: 'Success'})
     def get(self):
         '''Get all your stored music videos'''
         videos_all = Vid.query.all()
         output = vids_schema.dump(videos_all).data
         return {'videos':output}, 200
 
+    @api.doc(responses={404: 'Video Already on the Database', 200: 'Success'})
     @videos_api.expect(video_model)
     def post(self):
         '''Add new video to the list'''
         title = videos_api.payload['title']
         code = videos_api.payload['code']
+
         # Check if the video is already on the database
         video_exists = db.session.query(Vid).filter_by(code=code).first()
         #If video are not on the database, then add them
@@ -143,8 +113,40 @@ class Videos(Resource):
         return {'result': 'video already on db'}, 404
 
 
+@videos_api.route('/<string:code>')
+@api.doc(responses={404: 'Code Not Found', 200:'Success'},
+         params={'code': 'The Video Code'})
+class Video(Resource):
+
+    '''Show a single item and lets you delete it'''
+    def get(self, code):
+        '''Fetch a single video'''
+        video = check_if_video_exists(code)
+        output = vid_schema.dump(video).data
+        return {'video':output}, 200
+
+    def delete(self, code):
+        '''Delete a a single video'''
+        video = check_if_video_exists(code)
+        db.session.delete(video)
+        db.session.commit()
+        return {'result':'deleted'}, 200
+
+    @api.doc(parser=parser)
+    def put(self, code):
+        '''Update the title of a video'''
+        args = parser.parse_args()
+        new_details = {'title':args['title'], 'code':code}
+        video = check_if_video_exists(code)
+
+        video.title = new_details['title']
+        db.session.commit()
+
+        return {'result':'updated'}, 200
+
+
 @videos_api.route('/youtube')
-@api.doc(responses={404: 'Not able to fetch the YouTube API'})
+@api.doc(responses={404: 'Not able to fetch the YouTube API', 200: 'Success'})
 class YoutubeLikedVideos(Resource):
     def get(self):
         '''
@@ -163,7 +165,7 @@ class YoutubeLikedVideos(Resource):
         return response, 200
 
 @videos_api.route('/youtube/add_all')
-@api.doc(responses={404: 'Not able to fetch the YouTube API'})
+@api.doc(responses={404: 'Not able to fetch the YouTube API', 200:'Success'})
 class AddAllTheLikedVideos(Resource):
     def get(self):
         '''Add the 50 of your liked music videos to the database'''
@@ -185,7 +187,7 @@ class AddAllTheLikedVideos(Resource):
                 db.session.add(new_video)
 
         db.session.commit()
-        return {'result': 'Videos added'}, 200
+        return {'result': 'videos added'}, 200
 
 
 
@@ -243,8 +245,7 @@ def oauth2callback():
 
   return flask.redirect('videos/youtube')
 
-#Response functions
-
+#YouTube API response functions
 # This function extracts the desired values from the YouTube API response
 def parse_response(response):
     if response:
@@ -262,16 +263,6 @@ def parse_response(response):
               'such as <code>playlists.delete()</code>, but it is also ' +
               'true for some other methods, such as <code>videos.rate()</code>.')
 
-def print_response(response):
-  if response:
-      a = flask.jsonify(**response)
-      return a['items'][0]
-  else:
-    return ('This request does not return a response. For these samples, ' +
-            'this is generally true for requests that delete resources, ' +
-            'such as <code>playlists.delete()</code>, but it is also ' +
-            'true for some other methods, such as <code>videos.rate()</code>.')
-
 # Remove keyword arguments that are not set
 def remove_empty_kwargs(**kwargs):
   good_kwargs = {}
@@ -283,12 +274,7 @@ def remove_empty_kwargs(**kwargs):
 
 def playlist_items_list_by_playlist_id(client, **kwargs):
   kwargs = remove_empty_kwargs(**kwargs)
-
-  response = client.playlistItems().list(
-    **kwargs
-  ).execute()
-
-  # return print_response(response)
+  response = client.playlistItems().list(**kwargs).execute()
   return parse_response(response)
 
 ################################################################################

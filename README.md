@@ -21,9 +21,11 @@ Besides from the fact that the project is meant to be a hands-on learning :books
 ![Screenshot2](/data/screenshots/screen2.png?raw=true "Database JSON response")
 
 ## Features
-- Saves the music videos information in a relational database.
+- Saves the music videos in a relational database.
 - Retrieves and saves the last 50 YouTube **music** videos that you've liked.
-- Add videos.
+- Add, delete and modify videos.
+- YouTube OAuth 2.0.
+- Examples with Payload and Arguments.
 
 ## Prerequisites
 
